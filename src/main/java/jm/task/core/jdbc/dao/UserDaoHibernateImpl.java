@@ -109,8 +109,8 @@ public class UserDaoHibernateImpl implements UserDao {
 
         @Override
         public void cleanUsersTable() {
-            Session session = sessionFactory.openSession();
-            try {
+
+            try (Session session = sessionFactory.openSession();){
                 transaction = session.beginTransaction();
                 final List userList = session.createCriteria(User.class).list();
 
@@ -125,9 +125,6 @@ public class UserDaoHibernateImpl implements UserDao {
                 if (transaction != null) {
                     transaction.rollback();
                 }
-            } finally {
-                if (session != null)
-                    session.close();
             }
         }
 
